@@ -50,7 +50,7 @@ import viz.PlotTarget
   }
 
   def entryToTrack(e: String) =
-    val record = if e(16).toString().isBlank then RecordIdentifier.B else RecordIdentifier.valueOf(e(16).toString())
+    val record = if e(16).toString().isBlank() then RecordIdentifier.B else RecordIdentifier.valueOf(e(16).toString())
     val year = e.substring(0, 4).toInt
     val month = e.substring(4, 6).toInt
     val day = e.substring(6, 8).toInt
