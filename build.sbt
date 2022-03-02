@@ -1,7 +1,7 @@
 import laika.helium.Helium
 import laika.helium.config.HeliumIcon
 import laika.helium.config.IconLink
-import laika.helium._
+import laika.helium.*
 import laika.rewrite.link.LinkConfig
 import laika.rewrite.link.SourceLinks
 import laika.markdown.github.GitHubFlavor
@@ -72,20 +72,20 @@ lazy val docs = project
       //("org.scalanlp" %% "breeze" % "2.0").exclude("org.scala-lang.modules", "scala-collection-compat_2.13")
     ),
     laikaConfig := LaikaConfig.defaults.withConfigValue(
-        LinkConfig(sourceLinks = Seq(
+      LinkConfig(sourceLinks =
+        Seq(
           SourceLinks(baseUri = "https://github.com/Quafadas/hurdat/blob/main/src/main/scala/", suffix = "scala")
         )
       )
     ),
-
     laikaExtensions := Seq(GitHubFlavor, SyntaxHighlighting),
-    laikaTheme := Helium.defaults
-      .all.metadata(
+    laikaTheme := Helium.defaults.all
+      .metadata(
         title = Some("Hurdat"),
         language = Some("de")
       )
       .build
-/*     laikaTheme := Helium.defaults.all
+    /*     laikaTheme := Helium.defaults.all
       .metadata(
         title = Some("Hurdat"),
         language = Some("en"),
