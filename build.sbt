@@ -10,6 +10,7 @@ import java.io.File
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
+ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.temurin("17"))
 ThisBuild / tlSitePublishBranch := Some("main")
 ThisBuild / tlBaseVersion := "0.0"
 ThisBuild / organization := "io.github.quafadas"
