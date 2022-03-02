@@ -26,15 +26,15 @@ lazy val root = project
   .in(file("."))
   .settings(
     name := "hurdat",
-    description := "Playing with hurricane data",    
+    description := "Playing with hurricane data",
     libraryDependencies ++= Seq(
       "com.lihaoyi" %% "requests" % "0.7.0",
       "com.lihaoyi" %% "upickle" % "1.4.3",
       "com.lihaoyi" %% "os-lib" % "0.8.0",
-      "io.github.quafadas" %% "dedav4s" % "0.5.1",
+      "io.github.quafadas" %% "dedav4s" % "0.5.1"
     )
   )
-  //.enablePlugins(NoPublishPlugin)
+//.enablePlugins(NoPublishPlugin)
 
 val scalafixRules = Seq(
   "OrganizeImports",
@@ -110,5 +110,4 @@ lazy val docs = project
       )
       .build
   )
-  
   .enablePlugins(TypelevelSitePlugin)
