@@ -20,22 +20,21 @@ ThisBuild / developers := List(
   // your GitHub handle and name
   tlGitHubDev("quafadas", "Simon Parten")
 )
+ThisBuild / scalaVersion := "3.1.0"
 
 lazy val root = project
   .in(file("."))
   .settings(
     name := "hurdat",
-    description := "Playing with hurricane data",
-    scalaVersion := "3.0.2",
+    description := "Playing with hurricane data",    
     libraryDependencies ++= Seq(
-      "com.lihaoyi" %% "requests" % "0.6.9",
+      "com.lihaoyi" %% "requests" % "0.7.0",
       "com.lihaoyi" %% "upickle" % "1.4.3",
       "com.lihaoyi" %% "os-lib" % "0.8.0",
-      "io.github.quafadas" %% "dedav4s" % "0.0.9",
-      "org.scalanlp" %% "breeze" % "2.0"
+      "io.github.quafadas" %% "dedav4s" % "0.5.1",
     )
   )
-  .enablePlugins(NoPublishPlugin)
+  //.enablePlugins(NoPublishPlugin)
 
 val scalafixRules = Seq(
   "OrganizeImports",
@@ -54,6 +53,7 @@ lazy val jsdocs = project
 
 lazy val docs = project
   .in(file("myproject-docs")) // important: it must not be docs/
+  .dependsOn(root)
   .settings(
     mdocJS := Some(jsdocs),
     mdocVariables ++= Map(
@@ -110,5 +110,5 @@ lazy val docs = project
       )
       .build
   )
-  //.dependsOn(root)
+  
   .enablePlugins(TypelevelSitePlugin)
