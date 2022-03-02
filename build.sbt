@@ -1,15 +1,18 @@
 import laika.helium.Helium
 import laika.helium.config.HeliumIcon
 import laika.helium.config.IconLink
+import laika.helium._
+import laika.rewrite.link.LinkConfig
+import laika.rewrite.link.SourceLinks
+import laika.markdown.github.GitHubFlavor
+import laika.parse.code.SyntaxHighlighting
 import laika.ast.Path.Root
 import laika.theme.config.Color
 import java.time.Instant
-Global / semanticdbEnabled := true
-Global / onChangedBuildSource := ReloadOnSourceChanges
 import java.io.File
 
+Global / semanticdbEnabled := true
 Global / onChangedBuildSource := ReloadOnSourceChanges
-
 ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.temurin("17"))
 ThisBuild / tlSitePublishBranch := Some("main")
 ThisBuild / tlBaseVersion := "0.0"
@@ -68,16 +71,25 @@ lazy val docs = project
     libraryDependencies ++= Seq(
       //("org.scalanlp" %% "breeze" % "2.0").exclude("org.scala-lang.modules", "scala-collection-compat_2.13")
     ),
-    laikaConfig ~= { _.withRawContent },
-    tlSiteHeliumConfig ~= {
-      // Actually, this *disables* auto-linking, to avoid duplicates with mdoc
-      _.site.autoLinkJS()
-    },
-    laikaTheme := tlSiteHeliumConfig.value.all
+    laikaConfig := LaikaConfig.defaults.withConfigValue(
+        LinkConfig(sourceLinks = Seq(
+          SourceLinks(baseUri = "https://github.com/Quafadas/hurdat/blob/main/src/main/scala/", suffix = "scala")
+        )
+      )
+    ),
+
+    laikaExtensions := Seq(GitHubFlavor, SyntaxHighlighting),
+    laikaTheme := Helium.defaults
+      .all.metadata(
+        title = Some("Hurdat"),
+        language = Some("de")
+      )
+      .build
+/*     laikaTheme := Helium.defaults.all
       .metadata(
         title = Some("Hurdat"),
         language = Some("en"),
-        description = Some("Declarative data visualisation for scala"),
+        description = Some("Playing with hurdat"),
         authors = Seq("Simon Parten"),
         date = Some(Instant.now)
       )
@@ -108,6 +120,6 @@ lazy val docs = project
         navLinks = Seq(IconLink.external("https://github.com/Quafadas/hurdat", HeliumIcon.github)),
         highContrast = false
       )
-      .build
+      .build */
   )
   .enablePlugins(TypelevelSitePlugin)
