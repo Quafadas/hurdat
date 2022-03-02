@@ -1,0 +1,12 @@
+*.class
+*.log
+.bloop
+.bsp
+.metals
+.vscode
+project/project
+project/target
+target
+.DS_Store
+project/metals.sbt
+.ipynb_checkpoints
