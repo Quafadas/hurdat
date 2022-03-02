@@ -29,7 +29,7 @@ import viz.PlotTarget
   val rawTcData = requests.get("https://www.aoml.noaa.gov/hrd/hurdat/hurdat2.html")
 
   println("got raw data")
-    val s = rawTcData.text()
+  val s = rawTcData.text()
   val lines = s.split("\r\n").toSeq
   val length = lines.length
 
