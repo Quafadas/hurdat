@@ -24,16 +24,17 @@ lazy val root = project
   .in(file("."))
   .settings(
     name := "hurdat",
-    description := "Playing with hurricane data",    
-    scalaVersion := "3.0.2",    
-    libraryDependencies ++= Seq(      
+    description := "Playing with hurricane data",
+    scalaVersion := "3.0.2",
+    libraryDependencies ++= Seq(
       "com.lihaoyi" %% "requests" % "0.6.9",
       "com.lihaoyi" %% "upickle" % "1.4.3",
       "com.lihaoyi" %% "os-lib" % "0.8.0",
       "io.github.quafadas" %% "dedav4s" % "0.0.9",
-      "org.scalanlp"%%"breeze"%"2.0"
+      "org.scalanlp" %% "breeze" % "2.0"
     )
-  ).enablePlugins(NoPublishPlugin)
+  )
+  .enablePlugins(NoPublishPlugin)
 
 val scalafixRules = Seq(
   "OrganizeImports",
@@ -42,7 +43,6 @@ val scalafixRules = Seq(
   "ProcedureSyntax",
   "NoValInForComprehension"
 ).mkString(" ")
-
 
 lazy val jsdocs = project
   .in(file("jsdocs"))
@@ -54,7 +54,7 @@ lazy val jsdocs = project
 lazy val docs = project
   .in(file("myproject-docs")) // important: it must not be docs/
   .settings(
-    mdocJS := Some(jsdocs),        
+    mdocJS := Some(jsdocs),
     mdocVariables ++= Map(
       "js-batch-mode" -> "true",
       "js-html-header" ->
