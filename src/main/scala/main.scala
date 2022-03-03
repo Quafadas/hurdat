@@ -17,9 +17,8 @@
 import hurdat.*
 import viz.PlotTarget
 
-
 @main def readData() =
-  val raw = os.read( os.pwd / "hurdat.json")
+  val raw = os.read(os.pwd / "hurdat.json")
   val hurdat = upickle.default.read[Seq[HurdatSystem]](raw)
 
   println(hurdat.last)
