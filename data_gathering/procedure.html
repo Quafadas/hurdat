@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Laika 0.18.1 + Helium Theme" />
+    <title>Procedure</title>
+    
+    
+      <meta name="description" content="docs"/>
+    
+    
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700">
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css">
+    
+    <link rel="stylesheet" type="text/css" href="../helium/icofont.min.css" />
+    <link rel="stylesheet" type="text/css" href="../helium/laika-helium.css" />
+    <script src="../helium/laika-helium.js"></script>
+    
+    
+    <script> /* for avoiding page load transitions */ </script>
+  </head>
+
+  <body>
+
+    <header id="top-bar">
+
+      <div class="row">
+        <a id="nav-icon">
+          <i class="icofont-laika" title="Navigation">&#xefa2;</i>
+        </a>
+        
+      </div>
+  
+      <a class="icon-link" href="../index.html"><i class="icofont-laika" title="Home">&#xef47;</i></a>
+      
+      <span class="row links"></span>
+      
+    </header>
+
+    <nav id="sidebar">
+
+      <div class="row">
+        
+      </div>
+      
+      <ul class="nav-list">
+        <li class="level1 nav-header">Data Acquisition</li>
+        <li class="level2"><a href="acquisition.html">Data format</a></li>
+        <li class="level2 active"><a href="#">Procedure</a></li>
+        <li class="level1 nav-header">Analysis</li>
+        <li class="level2"><a href="../analysis/TC_per_year.html">Tropical Cyclones per year</a></li>
+      </ul>
+      
+    </nav>
+
+    <div id="container">
+
+      <nav id="page-nav">
+        <p class="header"><a href="#">Procedure</a></p>
+        
+        <ul class="nav-list">
+        </ul>
+        
+        <p class="footer"></p>
+      </nav>
+
+      <main class="content">
+
+        <h1 id="procedure" class="title">Procedure</h1>
+        <p>Code - <a href="https://github.com/Quafadas/hurdat/blob/main/src/main/scala/main.scala">main</a></p>
+        <ol class="arabic">
+          <li>A get request is going to get us some html with the raw text in hurdat format</li>
+          <li>Drop the whitespace and html tags at the start and end of the file</li>
+          <li>Identify lines, in which the first two characters are letters ... these are the &quot;header&quot; lines of a system</li>
+          <li>Add a marker to each line, identifying the set of lines which are part of that hurriance</li>
+          <li>Group the lines by the identifier in the previous step</li>
+          <li>Assign the header / track to the data model, by writing functions which respect the formatting documnent</li>
+          <li>Write to JSON</li>
+        </ol>
+
+      </main>
+
+    </div>
+
+  </body>
+</html>

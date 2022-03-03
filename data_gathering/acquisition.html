@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Laika 0.18.1 + Helium Theme" />
+    <title>Data format</title>
+    
+    
+      <meta name="description" content="docs"/>
+    
+    
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700">
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css">
+    
+    <link rel="stylesheet" type="text/css" href="../helium/icofont.min.css" />
+    <link rel="stylesheet" type="text/css" href="../helium/laika-helium.css" />
+    <script src="../helium/laika-helium.js"></script>
+    
+    
+    <script> /* for avoiding page load transitions */ </script>
+  </head>
+
+  <body>
+
+    <header id="top-bar">
+
+      <div class="row">
+        <a id="nav-icon">
+          <i class="icofont-laika" title="Navigation">&#xefa2;</i>
+        </a>
+        
+      </div>
+  
+      <a class="icon-link" href="../index.html"><i class="icofont-laika" title="Home">&#xef47;</i></a>
+      
+      <span class="row links"></span>
+      
+    </header>
+
+    <nav id="sidebar">
+
+      <div class="row">
+        
+      </div>
+      
+      <ul class="nav-list">
+        <li class="level1 nav-header">Data Acquisition</li>
+        <li class="level2 active"><a href="#">Data format</a></li>
+        <li class="level2"><a href="procedure.html">Procedure</a></li>
+        <li class="level1 nav-header">Analysis</li>
+        <li class="level2"><a href="../analysis/TC_per_year.html">Tropical Cyclones per year</a></li>
+      </ul>
+      
+    </nav>
+
+    <div id="container">
+
+      <nav id="page-nav">
+        <p class="header"><a href="#">Data format</a></p>
+        
+        <ul class="nav-list">
+        </ul>
+        
+        <p class="footer"></p>
+      </nav>
+
+      <main class="content">
+
+        <h1 id="data-format" class="title">Data format</h1>
+        <p>Hurdat is published by noaa. We&#39;re interested in the &quot;best track&quot; dataset, which rolls it own data format. </p>
+        <p><a href="https://www.aoml.noaa.gov/hrd/hurdat/hurdat2.html">Best Track Data</a>  -  <a href="https://www.aoml.noaa.gov/hrd/hurdat/hurdat2-format.pdf">format</a></p>
+        <p>We aim to parse into some structure that is more natural for scala to take advantage of. We&#39;ll want to end up with these definitions</p>
+        <pre><code class="nohighlight"><span class="keyword">case</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">TrackInfo</span><span>(
+    </span><span class="identifier">year</span><span>: </span><span class="type-name">Int</span><span>,
+    </span><span class="identifier">month</span><span>: </span><span class="type-name">Int</span><span>,
+    </span><span class="identifier">day</span><span>: </span><span class="type-name">Int</span><span>,
+    </span><span class="identifier">hour</span><span>: </span><span class="type-name">Int</span><span>,
+    </span><span class="identifier">minute</span><span>: </span><span class="type-name">Int</span><span>,
+    </span><span class="identifier">recordType</span><span>: </span><span class="type-name">RecordIdentifier</span><span>,
+    </span><span class="identifier">systemStatus</span><span>: </span><span class="type-name">SystemStatus</span><span>,
+    </span><span class="identifier">latitude</span><span>: </span><span class="type-name">Double</span><span>,
+    </span><span class="identifier">longditude</span><span>: </span><span class="type-name">Double</span><span>,
+    </span><span class="identifier">latHemisphere</span><span>: </span><span class="type-name">String</span><span>,
+    </span><span class="identifier">longHemisphere</span><span>: </span><span class="type-name">String</span><span>,
+    </span><span class="identifier">maxSustainedWind</span><span>: </span><span class="type-name">Double</span><span>,
+    </span><span class="identifier">minPressure</span><span>: </span><span class="type-name">Double</span><span>
+) </span><span class="identifier">derives</span><span> </span><span class="type-name">ReadWriter</span><span>
+
+</span><span class="keyword">case</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">TrackInfo</span><span>(
+        </span><span class="identifier">year</span><span>: </span><span class="type-name">Int</span><span>, 
+        </span><span class="identifier">month</span><span>: </span><span class="type-name">Int</span><span>, 
+        </span><span class="identifier">day</span><span>: </span><span class="type-name">Int</span><span>, 
+        </span><span class="identifier">hour</span><span>:</span><span class="type-name">Int</span><span>, 
+        </span><span class="identifier">minute</span><span>: </span><span class="type-name">Int</span><span>,
+        </span><span class="identifier">recordType</span><span> : </span><span class="type-name">RecordIdentifier</span><span>,
+        </span><span class="identifier">systemStatus</span><span>: </span><span class="type-name">SystemStatus</span><span>,
+        </span><span class="identifier">latitude</span><span>: </span><span class="type-name">Double</span><span>, 
+        </span><span class="identifier">longditude</span><span>:</span><span class="type-name">Double</span><span>, 
+        </span><span class="identifier">latHemisphere</span><span>:</span><span class="type-name">String</span><span>, 
+        </span><span class="identifier">longHemisphere</span><span>:</span><span class="type-name">String</span><span>,
+        </span><span class="identifier">maxSustainedWind</span><span>:</span><span class="type-name">Double</span><span>, 
+        </span><span class="identifier">minPressure</span><span>:</span><span class="type-name">Double</span><span>, 
+    ) </span><span class="identifier">derives</span><span> </span><span class="type-name">ReadWriter</span><span>
+
+</span><span class="keyword">case</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">HurdatSystem</span><span>(
+    </span><span class="identifier">basin</span><span>: </span><span class="type-name">String</span><span> = </span><span class="string-literal">&quot;AL&quot;</span><span>,
+    </span><span class="identifier">number</span><span>: </span><span class="type-name">Int</span><span> = </span><span class="number-literal">0</span><span>,
+    </span><span class="identifier">year</span><span>: </span><span class="type-name">Int</span><span> = </span><span class="number-literal">0</span><span>,
+    </span><span class="identifier">name</span><span>: </span><span class="type-name">String</span><span> = </span><span class="string-literal">&quot;&quot;</span><span>,
+    </span><span class="identifier">track</span><span>: </span><span class="type-name">Seq</span><span>[</span><span class="type-name">TrackInfo</span><span>] = </span><span class="type-name">List</span><span>[</span><span class="type-name">TrackInfo</span><span>]()
+) </span><span class="identifier">derives</span><span> </span><span class="type-name">ReadWriter</span><span>
+
+</span><span class="keyword">case</span><span> </span><span class="keyword">class</span><span> </span><span class="type-name">HurdatSystems</span><span>(</span><span class="identifier">hurricanes</span><span>: </span><span class="type-name">Seq</span><span>[</span><span class="type-name">HurdatSystem</span><span>]) </span><span class="identifier">derives</span><span> </span><span class="type-name">ReadWriter</span></code></pre>
+        <p>Complete source here; <a href="https://github.com/Quafadas/hurdat/blob/main/src/main/scala/HurdatModel.scala">HurdatModel</a></p>
+        <p>A couple of enums aren&#39;t defined here, but you get the idea that ultimately, we want a collection of case classes. </p>
+        <p>Hurdat is a public dataset, but it changes very slowly (every 6 months). We&#39;ll write a script to parse the raw data, and save it as a <a href="../assets/hurdat.json">json file</a> which we can subsequently reference as our &quot;database&quot;. </p>
+        <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">hurdat</span><span>.*
+</span><span class="identifier">println</span><span>(</span><span class="identifier">os</span><span>.</span><span class="identifier">pwd</span><span>)
+</span><span class="comment">// /home/runner/work/hurdat/hurdat
+</span><span class="keyword">val</span><span> </span><span class="identifier">raw</span><span> = </span><span class="identifier">os</span><span>.</span><span class="identifier">read</span><span>( </span><span class="identifier">os</span><span>.</span><span class="identifier">pwd</span><span> / </span><span class="string-literal">&quot;docs&quot;</span><span> / </span><span class="string-literal">&quot;assets&quot;</span><span>/ </span><span class="string-literal">&quot;hurdat.json&quot;</span><span> )
+</span><span class="comment">// raw: String = &quot;&quot;&quot;[
+//   {
+//     &quot;number&quot;: 1,
+//     &quot;year&quot;: 1851,
+//     &quot;name&quot;: &quot;UNNAMED&quot;,
+//     &quot;track&quot;: [
+//       {
+//         &quot;year&quot;: 1851,
+//         &quot;month&quot;: 6,
+//         &quot;day&quot;: 25,
+//         &quot;hour&quot;: 0,
+//         &quot;minute&quot;: 0,
+//         &quot;recordType&quot;: {
+//           &quot;$type&quot;: &quot;hurdat.RecordIdentifier.C&quot;
+//         },
+//         &quot;systemStatus&quot;: {
+//           &quot;$type&quot;: &quot;hurdat.SystemStatus.TD&quot;
+//         },
+//         &quot;latitude&quot;: 28,
+//         &quot;longditude&quot;: 94.8,
+//         &quot;latHemisphere&quot;: &quot;N&quot;,
+//         &quot;longHemisphere&quot;: &quot;W&quot;,
+//         &quot;maxSustainedWind&quot;: 80,
+//         &quot;minPressure&quot;: -999
+//       },
+//       {
+//         &quot;year&quot;: 1851,
+//         &quot;month&quot;: 6,
+//         &quot;day&quot;: 25,
+//         &quot;hour&quot;: 6,
+//         &quot;minute&quot;: 0,
+//         &quot;recordType&quot;: {
+//           &quot;$type&quot;: &quot;hurdat.RecordIdentifier.C&quot;
+//         },
+//         &quot;systemStatus&quot;: {
+//           &quot;$type&quot;: &quot;hurdat.SystemStatus.TD&quot;
+//         },
+//         &quot;latitude&quot;: 28,
+//         &quot;longditude&quot;: 95.4,
+//         &quot;latHemisphere&quot;: &quot;N&quot;,
+//         &quot;longHemisphere&quot;: &quot;W&quot;,
+//         &quot;maxSustainedWind&quot;: 80,
+//         &quot;minPressure&quot;: -999
+//       },
+//       {
+//         &quot;year&quot;: 1851,
+//         &quot;month&quot;: 6,
+//         &quot;day&quot;: 25,
+//         &quot;hour&quot;: 12,
+// ...
+</span><span class="identifier">upickle</span><span>.</span><span class="keyword">default</span><span>.</span><span class="identifier">read</span><span>[</span><span class="type-name">Seq</span><span>[</span><span class="type-name">HurdatSystem</span><span>]](</span><span class="identifier">raw</span><span>)
+</span><span class="comment">// res1: Seq[HurdatSystem] = List(
+//   HurdatSystem(
+//     basin = &quot;AL&quot;,
+//     number = 1,
+//     year = 1851,
+//     name = &quot;UNNAMED&quot;,
+//     track = List(
+//       TrackInfo(
+//         year = 1851,
+//         month = 6,
+//         day = 25,
+//         hour = 0,
+//         minute = 0,
+//         recordType = C,
+//         systemStatus = TD,
+//         latitude = 28.0,
+//         longditude = 94.8,
+//         latHemisphere = &quot;N&quot;,
+//         longHemisphere = &quot;W&quot;,
+//         maxSustainedWind = 80.0,
+//         minPressure = -999.0
+//       ),
+//       TrackInfo(
+//         year = 1851,
+//         month = 6,
+//         day = 25,
+//         hour = 6,
+//         minute = 0,
+//         recordType = C,
+//         systemStatus = TD,
+//         latitude = 28.0,
+//         longditude = 95.4,
+//         latHemisphere = &quot;N&quot;,
+//         longHemisphere = &quot;W&quot;,
+//         maxSustainedWind = 80.0,
+//         minPressure = -999.0
+//       ),
+//       TrackInfo(
+//         year = 1851,
+//         month = 6,
+//         day = 25,
+//         hour = 12,
+//         minute = 0,
+//         recordType = C,
+//         systemStatus = TD,
+//         latitude = 28.0,
+//         longditude = 96.0,
+//         latHemisphere = &quot;N&quot;,
+//         longHemisphere = &quot;W&quot;,
+// ...</span></code></pre>
+
+      </main>
+
+    </div>
+
+  </body>
+</html>
