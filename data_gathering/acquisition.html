@@ -119,8 +119,6 @@
         <p>A couple of enums aren&#39;t defined here, but you get the idea that ultimately, we want a collection of case classes. </p>
         <p>Hurdat is a public dataset, but it changes very slowly (every 6 months). We&#39;ll write a script to parse the raw data, and save it as a <a href="../assets/hurdat.json">json file</a> which we can subsequently reference as our &quot;database&quot;. </p>
         <pre><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">hurdat</span><span>.*
-</span><span class="identifier">println</span><span>(</span><span class="identifier">os</span><span>.</span><span class="identifier">pwd</span><span>)
-</span><span class="comment">// /home/runner/work/hurdat/hurdat
 </span><span class="keyword">val</span><span> </span><span class="identifier">raw</span><span> = </span><span class="identifier">os</span><span>.</span><span class="identifier">read</span><span>( </span><span class="identifier">os</span><span>.</span><span class="identifier">pwd</span><span> / </span><span class="string-literal">&quot;docs&quot;</span><span> / </span><span class="string-literal">&quot;assets&quot;</span><span>/ </span><span class="string-literal">&quot;hurdat.json&quot;</span><span> )
 </span><span class="comment">// raw: String = &quot;&quot;&quot;[
 //   {
@@ -173,7 +171,7 @@
 //         &quot;hour&quot;: 12,
 // ...
 </span><span class="identifier">upickle</span><span>.</span><span class="keyword">default</span><span>.</span><span class="identifier">read</span><span>[</span><span class="type-name">Seq</span><span>[</span><span class="type-name">HurdatSystem</span><span>]](</span><span class="identifier">raw</span><span>)
-</span><span class="comment">// res1: Seq[HurdatSystem] = List(
+</span><span class="comment">// res0: Seq[HurdatSystem] = List(
 //   HurdatSystem(
 //     basin = &quot;AL&quot;,
 //     number = 1,
