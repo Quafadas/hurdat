@@ -37,7 +37,7 @@ lazy val root = project
       "io.github.quafadas" %% "dedav4s" % "0.5.1"
     )
   )
-//.enablePlugins(NoPublishPlugin)
+  .enablePlugins(NoPublishPlugin)
 
 val scalafixRules = Seq(
   "OrganizeImports",

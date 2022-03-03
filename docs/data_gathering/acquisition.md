@@ -57,7 +57,6 @@ Hurdat is a public dataset, but it changes very slowly (every 6 months). We'll w
 
 ```scala mdoc
 import hurdat.*
-println(os.pwd)
 val raw = os.read( os.pwd / "docs" / "assets"/ "hurdat.json" )
 upickle.default.read[Seq[HurdatSystem]](raw)
 
