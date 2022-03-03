@@ -11,3 +11,4 @@ target
 .DS_Store
 project/metals.sbt
 .ipynb_checkpoints
+node_modules

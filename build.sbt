@@ -1,3 +1,4 @@
+import org.scalablytyped.converter.internal.ScalaJsBundlerHack
 import laika.helium.Helium
 import laika.helium.config.HeliumIcon
 import laika.helium.config.IconLink
@@ -25,40 +26,50 @@ ThisBuild / developers := List(
 )
 ThisBuild / scalaVersion := "3.1.0"
 
-lazy val root = project
+lazy val root = crossProject(JSPlatform, JVMPlatform)
   .in(file("."))
   .settings(
     name := "hurdat",
     description := "Playing with hurricane data",
     libraryDependencies ++= Seq(
+      "com.lihaoyi" %%% "upickle" % "1.5.0",
+
+    )
+  ).jvmSettings(
+    libraryDependencies ++= Seq(
       "com.lihaoyi" %% "requests" % "0.7.0",
-      "com.lihaoyi" %% "upickle" % "1.4.3",
       "com.lihaoyi" %% "os-lib" % "0.8.0",
       "io.github.quafadas" %% "dedav4s" % "0.5.1"
     )
   )
+  .jsSettings(
+    libraryDependencies ++= Seq(      
+      "org.scala-js" %%% "scalajs-dom" % "2.1.0",
+    )
+  )
   .enablePlugins(NoPublishPlugin)
 
-val scalafixRules = Seq(
-  "OrganizeImports",
-  "DisableSyntax",
-  "LeakingImplicitClassVal",
-  "ProcedureSyntax",
-  "NoValInForComprehension"
-).mkString(" ")
-
-lazy val jsdocs = project
-  .in(file("jsdocs"))
+lazy val leaflet = project
+  .in(file("leaflet"))
+  .enablePlugins(ScalablyTypedConverterGenSourcePlugin, ScalaJSBundlerPlugin)
+  .dependsOn(root.js)
   .settings(
-    libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "2.1.0"
+    organization := "com.leaflet",
+    moduleName := "leaflet",
+    Compile / npmDependencies ++= Seq(      
+      "leaflet" -> "1.7.1",
+      "@types/leaflet" -> "1.7.9"
+    ),
+    stOutputPackage := "com.leaflet",
+    //stMinimize := Selection.AllExcept("@types/leaflet"),
+    scalaJSUseMainModuleInitializer := true
   )
-  .enablePlugins(ScalaJSPlugin)
-
+  
 lazy val docs = project
   .in(file("myproject-docs")) // important: it must not be docs/
-  .dependsOn(root)
+  .dependsOn(root.jvm)
   .settings(
-    mdocJS := Some(jsdocs),
+    mdocJS := Some(leaflet),
     mdocVariables ++= Map(
       "js-batch-mode" -> "true",
       "js-html-header" ->
