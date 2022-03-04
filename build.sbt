@@ -33,6 +33,7 @@ lazy val root = crossProject(JSPlatform, JVMPlatform)
     description := "Playing with hurricane data",
     libraryDependencies ++= Seq(
       "com.lihaoyi" %%% "upickle" % "1.5.0",
+      "org.scalameta" %%% "munit" % "0.7.29" % Test
 
     )
   ).jvmSettings(
@@ -53,8 +54,9 @@ lazy val leaflet = project
   .in(file("leaflet"))
   .enablePlugins(ScalablyTypedConverterGenSourcePlugin, ScalaJSBundlerPlugin)
   .dependsOn(root.js)
-  .settings(
+  .settings(    
     organization := "com.leaflet",
+    webpackCliVersion := "4.9.2",
     moduleName := "leaflet",
     Compile / npmDependencies ++= Seq(      
       "leaflet" -> "1.7.1",
@@ -62,7 +64,9 @@ lazy val leaflet = project
     ),
     stOutputPackage := "com.leaflet",
     //stMinimize := Selection.AllExcept("@types/leaflet"),
-    scalaJSUseMainModuleInitializer := true
+    scalaJSUseMainModuleInitializer := true,
+    webpackEmitSourceMaps := false,
+    webpackDevServerExtraArgs := Seq("--inline")
   )
   
 lazy val docs = project

@@ -8,8 +8,10 @@ import com.leaflet.leaflet.mod as L
 import com.leaflet.leaflet.mod.LatLngLiteral
 import scala.concurrent.ExecutionContext.Implicits.global
 import scalajs.js.Thenable.Implicits.thenable2future
-import hurdat._
+import hurdat.*
 import scala.concurrent.Await
+import upickle.default.*
+import com.leaflet.leaflet.mod.CircleMarkerOptions
 
 object TutorialApp:
   def main(args: Array[String]): Unit =
@@ -21,24 +23,38 @@ object TutorialApp:
 // https://github.com/ScalablyTyped/Demos/blob/master/leaflet/src/main/scala/demo.scala
   def setupUI(): Unit =
     println("here")
-    val url = "https://github.com/Quafadas/hurdat/blob/main/hurdat.json"
-    val responseText = for {
-        response <- dom.fetch(url)
-        text <- response.text()
-    } yield {
-        val data = upickle.default.read[Seq[HurdatSystem]](text)                        
-        data
-    }         
+    val url = "hurdat.json"
+    val responseText = for
+      response <- dom.fetch(url)
+      text <- response.text()
+    yield
+      val data = upickle.default.read[Seq[HurdatSystem]](text)
+      println(data.head)
+      data
+
     val div = document.createElement("div").asInstanceOf[html.Div]
     div.setAttribute("id", "map")
     div.style.height = "50vmin"
-    div.style.width = "100vmin"
+    div.style.width = "98vmin"
     document.body.appendChild(div)
-    addMapToDiv(div)
+    responseText.map(tcs => addMapToDiv(div, tcs.headOption))
 
-  def addMapToDiv(parent: html.Div) =
+  def addMapToDiv(parent: html.Div, tc: Option[HurdatSystem]) =
     val el = document.getElementById("map").asInstanceOf[html.Element]
     val map = L.map(el).setView(L.LatLngLiteral(30, -50), zoom = 4)
+    tc.map(aTC =>
+      aTC.track.map(trackEntry =>
+        val color: String = trackColour(trackEntry)
+        L.circleMarker(
+          L.LatLngLiteral(trackEntry.latitude, trackEntry.longditude * -1),
+          L.CircleMarkerOptions()
+            .setColor(color)
+            .setRadius(5)
+            .setWeight(2)
+            
+        ).addTo(map)
+      )
+    )
     L.tileLayer(
       s"https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
       L.TileLayerOptions()
