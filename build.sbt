@@ -1,3 +1,4 @@
+import laika.ast.MessageFilter
 import org.scalablytyped.converter.internal.ScalaJsBundlerHack
 import laika.helium.Helium
 import laika.helium.config.HeliumIcon
@@ -64,6 +65,7 @@ lazy val leaflet = project
     ),
     stOutputPackage := "com.leaflet",
     //stMinimize := Selection.AllExcept("@types/leaflet"),
+    webpackBundlingMode := BundlingMode.LibraryOnly(),
     scalaJSUseMainModuleInitializer := true,
     webpackEmitSourceMaps := false,
     webpackDevServerExtraArgs := Seq("--inline")
@@ -74,10 +76,13 @@ lazy val docs = project
   .dependsOn(root.jvm)
   .settings(
     mdocJS := Some(leaflet),
+    mdocJSLibraries := webpack.in(leaflet, Compile, fullOptJS).value,
     mdocVariables ++= Map(
-      "js-batch-mode" -> "true",
       "js-html-header" ->
         """
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin="" />        
 <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@5"></script>
 <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
 <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
@@ -86,19 +91,24 @@ lazy val docs = project
     libraryDependencies ++= Seq(
       //("org.scalanlp" %% "breeze" % "2.0").exclude("org.scala-lang.modules", "scala-collection-compat_2.13")
     ),
-    laikaConfig := LaikaConfig.defaults.withConfigValue(
-      LinkConfig(sourceLinks =
-        Seq(
-          SourceLinks(baseUri = "https://github.com/Quafadas/hurdat/blob/main/src/main/scala/", suffix = "scala")
+    laikaConfig := LaikaConfig.defaults
+      .withRawContent
+/*       .failOnMessages(MessageFilter.None)
+      .renderMessages(MessageFilter.Error) */
+      .withConfigValue(
+        LinkConfig(sourceLinks =
+          Seq(
+            SourceLinks(baseUri = "https://github.com/Quafadas/hurdat/blob/main/src/main/scala/", suffix = "scala")
+          )
         )
-      )
-    ),
+      ),
     laikaExtensions := Seq(GitHubFlavor, SyntaxHighlighting),
     laikaTheme := Helium.defaults.all
       .metadata(
         title = Some("Hurdat"),
         language = Some("de")
       )
+      .site.autoLinkJS()
       .build
     /*     laikaTheme := Helium.defaults.all
       .metadata(
