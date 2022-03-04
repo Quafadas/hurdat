@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Laika 0.18.1 + Helium Theme" />
+    <title></title>
+    
+    
+      <meta name="description" content="docs"/>
+    
+    
+    
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700">
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css">
+    
+    <link rel="stylesheet" type="text/css" href="../helium/icofont.min.css" />
+    <link rel="stylesheet" type="text/css" href="../helium/laika-helium.css" />
+    <script src="../helium/laika-helium.js"></script>
+    
+    
+    <script> /* for avoiding page load transitions */ </script>
+  </head>
+
+  <body>
+
+    <header id="top-bar">
+
+      <div class="row">
+        <a id="nav-icon">
+          <i class="icofont-laika" title="Navigation">&#xefa2;</i>
+        </a>
+        
+      </div>
+  
+      <a class="icon-link" href="../index.html"><i class="icofont-laika" title="Home">&#xef47;</i></a>
+      
+      <span class="row links"></span>
+      
+    </header>
+
+    <nav id="sidebar">
+
+      <div class="row">
+        
+      </div>
+      
+      <ul class="nav-list">
+        <li class="level1 nav-header">Data Acquisition</li>
+        <li class="level2"><a href="../data_gathering/acquisition.html">Data format</a></li>
+        <li class="level2"><a href="../data_gathering/procedure.html">Procedure</a></li>
+        <li class="level1 nav-header">Analysis</li>
+        <li class="level2"><a href="TC_per_year.html">Tropical Cyclones per year</a></li>
+        <li class="level2 active"><a href="#">tracks.md</a></li>
+      </ul>
+      
+    </nav>
+
+    <div id="container">
+
+      <nav id="page-nav">
+        <p class="header"><a href="#"></a></p>
+        
+        <ul class="nav-list">
+        </ul>
+        
+        <p class="footer"></p>
+      </nav>
+
+      <main class="content">
+
+        <p>Try and get some scala js going</p>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">org</span><span>.</span><span class="identifier">scalajs</span><span>.</span><span class="identifier">dom</span><span>.</span><span class="identifier">html</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">org</span><span>.</span><span class="identifier">scalajs</span><span>.</span><span class="identifier">dom</span><span>
+</span><span class="keyword">import</span><span> </span><span class="identifier">scala</span><span>.</span><span class="identifier">util</span><span>.</span><span class="type-name">Random</span><span>
+
+
+</span><span class="keyword">val</span><span> </span><span class="identifier">child</span><span> = </span><span class="identifier">dom</span><span>.</span><span class="identifier">document</span><span>.</span><span class="identifier">createElement</span><span>(</span><span class="string-literal">&quot;div&quot;</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">anId</span><span> = </span><span class="type-name">Random</span><span>.</span><span class="identifier">alphanumeric</span><span>.</span><span class="identifier">take</span><span>(</span><span class="number-literal">8</span><span>).</span><span class="identifier">mkString</span><span>(</span><span class="string-literal">&quot;&quot;</span><span>)        
+</span><span class="identifier">child</span><span>.</span><span class="identifier">id</span><span> = </span><span class="identifier">anId</span><span>
+</span><span class="identifier">child</span><span>.</span><span class="identifier">setAttribute</span><span>(</span><span class="string-literal">&quot;style&quot;</span><span>,</span><span class="string-literal">s&quot;width:75vmin;height:75vmin&quot;</span><span>)
+</span><span class="identifier">node</span><span>.</span><span class="identifier">appendChild</span><span>(</span><span class="identifier">child</span><span>)
+</span><span class="identifier">hurdat</span><span>.</span><span class="identifier">map</span><span>.</span><span class="identifier">setupMap</span><span>(</span><span class="string-literal">&quot;../assets/hurdat.json&quot;</span><span>, </span><span class="type-name">Some</span><span>(</span><span class="identifier">child</span><span>.</span><span class="identifier">asInstanceOf</span><span>[</span><span class="identifier">html</span><span>.</span><span class="type-name">Div</span><span>]))</span></code></pre>
+        <div id="mdoc-html-run0" data-mdoc-js></div>
+        <p><link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>      <br>
+        <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+        <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+        <script crossorigin type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script></p>
+        <p><script type="text/javascript" src="leaflet-opt-library.js" defer></script>
+        <script type="text/javascript" src="leaflet-opt-loader.js" defer></script>
+        <script type="text/javascript" src="tracks.md.js" defer></script>
+        <script type="text/javascript" src="mdoc.js" defer></script></p>
+
+      </main>
+
+    </div>
+
+  </body>
+</html>
