@@ -16,12 +16,20 @@
 
 import hurdat.*
 import viz.PlotTarget
+import io.circe.parser.decode
+
+import io.circe.generic.semiauto._
+import io.circe.syntax._
+import io.circe.Encoder.encodeString
 
 @main def readData() =
   val raw = os.read(os.pwd / "hurdat.json")
   val hurdat = upickle.default.read[Seq[HurdatSystem]](raw)
-
   println(hurdat.last)
+
+  val rawCirce = os.read(os.pwd / "hurdatCirce.json")
+  val hurdatCirce = decode[Seq[HurdatSystem]](rawCirce)
+  println(hurdatCirce.map(_.last) )
 
 @main def acquireData() =
   println("Running data import")
@@ -42,14 +50,14 @@ import viz.PlotTarget
     firstTwoAreLetters.findFirstIn(x) match
       case Some(x) => 1
       case _       => 0
-  }
+  }.toArray
 
   val hurricaneSections = headerLines.scanLeft(0)(_ + _).drop(1)
   val allData = (hurricaneSections zip headerLines zip cleanedLines) map { case ((a, b), c) =>
     (a, b, c)
   }
 
-  def entryToTrack(e: String) =
+  def entryToTrack(e: String): TrackInfo =
     val record = if e(16).toString().isBlank() then RecordIdentifier.B else RecordIdentifier.valueOf(e(16).toString())
     val year = e.substring(0, 4).toInt
     val month = e.substring(4, 6).toInt
@@ -70,8 +78,8 @@ import viz.PlotTarget
       day = day,
       hour = hour,
       minute = minute,
-      recordType = recordType,
-      systemStatus = status,
+      recordType = record.toString,
+      systemStatus = status.toString,
       longditude = longditude,
       latitude = latitude,
       latHemisphere = latHem,
@@ -95,7 +103,7 @@ import viz.PlotTarget
 
   val tracks1 = allData.groupBy(_._1).view
   val tracks = tracks1.mapValues { list =>
-    list.drop(1).map { case (a, b, track) => entryToTrack(track) }
+    list.drop(1).toArray.map { case (a, b, track) => entryToTrack(track) }
   }.view
 
   val finalDbTes = allTC.head
@@ -103,7 +111,7 @@ import viz.PlotTarget
 
   finalDbTes._2.copy(track = extract)
 
-  val finalTCDb: Seq[HurdatSystem] = allTC.map { case (tempId, hurricane) =>
+  val finalTCDb: Array[HurdatSystem] = allTC.map { case (tempId, hurricane) =>
     val hurTrack = tracks(tempId)
 
     hurricane.copy(track = hurTrack)
@@ -111,4 +119,5 @@ import viz.PlotTarget
 
   //println("saving to JSON file")
   os.write.over(os.pwd / "hurdat.json", upickle.default.write(finalTCDb, 2))
-  os.write.over(os.pwd / "docs" / "assets" / "huvrdat.json", upickle.default.write(finalTCDb, 2))
+  os.write.over(os.pwd / "hurdatCirce.json", finalTCDb.asJson.toString)
+  os.write.over(os.pwd / "docs" / "assets" / "hurdat.json", upickle.default.write(finalTCDb, 2))

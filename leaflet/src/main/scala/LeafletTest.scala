@@ -3,6 +3,7 @@ package hurdat.map
 import org.scalajs.dom
 import org.scalajs.dom.document
 import scala.scalajs.js.annotation.JSExportTopLevel
+import scala.scalajs.js.annotation.JSImport
 import org.scalajs.dom.html
 import com.leaflet.leaflet.mod as L
 import com.leaflet.leaflet.mod.LatLngLiteral
@@ -16,10 +17,15 @@ import scala.scalajs.js
 import scala.scalajs.js.JSConverters.*
 import com.leaflet.leaflet.leafletStrings.track
 import com.leaflet.leaflet.mod.Map_
+import org.scalajs.dom.Worker
+import scala.scalajs.js.JSON
+import hurdat.JSHurdatSystem
+import io.circe.parser.decode
 
 val dataLocation = "hurdat.json"
-var hurdatDB: Option[Seq[HurdatSystem]] = None
+var hurdatDB: Option[js.Array[HurdatSystem]] = None
 // https://github.com/ScalablyTyped/Demos/blob/master/leaflet/src/main/scala/demo.scala
+
 def setupMap(url: String, parent: Option[html.Div] = None): Unit =
 
   val appendToT = parent match
@@ -32,25 +38,39 @@ def setupMap(url: String, parent: Option[html.Div] = None): Unit =
       tempDiv
     case Some(div) => div
 
-  for
+/*   for    
     response <- dom.fetch("../assets/firstTC.json")
     text <- response.text()
   yield
+    println("reading data")
     val data = upickle.default.read[Seq[HurdatSystem]](text)
     val leaflet = addMapToDiv(appendToT)
-    addTrackToMap(leaflet, data.headOption)    
+    println("reading data - add map")
+    addTrackToMap(leaflet, data.headOption) */
 
   for
     response <- dom.fetch(url)
     text <- response.text()
   yield
+    println("did reload? 4")
     println("request done, parsing hurdat")
-    val data = upickle.default.read[Seq[HurdatSystem]](text)
-    println("parsing complete")
-    hurdatDB = Some(data)
-
-
-  
+    //val worker = new Worker("")
+    //val data = upickle.default.read[js.Array[HurdatSystem]](text)
+    //val data = JSON.parse(text).asInstanceOf[js.Array[js.Object]]
+    val data = JSON.parse(text).asInstanceOf[js.Array[HurdatSystem]]
+    //val data = decode[Vector[HurdatSystem]](text)
+    //val data = upickle.default.read[Vector[HurdatSystem]](text)
+    println("did parse")
+    println(data.last.year)
+    println("check complete")
+    //println(JSON.stringify(data.head))
+    
+    //hurdatDB = Some(data)
+    val leaflet = addMapToDiv(appendToT)
+    println("added map")
+    addTrackToMap(leaflet, Some(data.head))
+    println("added track")
+    ()
 
 def addMapToDiv(parent: html.Div) =
   //val el = document.getElementById("map").asInstanceOf[html.Element]
@@ -76,25 +96,35 @@ def addTrackToMap(map: Map_, tc: Option[HurdatSystem]) =
   // Circles for observations
   tc.map { aTC =>
     println("TC")
+    println(aTC)
+    val layerGroup = L.layerGroup()
     aTC.track.map(trackEntry =>
+      println(trackEntry)
       val color: String = hurdat.trackColour(trackEntry)
-      L.circleMarker(
-        L.LatLngLiteral(trackEntry.latitude, trackEntry.longditude * -1),
-        L.CircleMarkerOptions()
-          .setColor(color)
-          .setRadius(5)
-          .setWeight(2)
-      ).addTo(map)
+      layerGroup.addLayer(
+        L.circleMarker(
+          L.LatLngLiteral(trackEntry.latitude, trackEntry.longditude * -1),
+          L.CircleMarkerOptions()
+            .setColor(color)
+            .setRadius(5)
+            .setWeight(2)
+        )
+      )
     )
     // Lines for the track
-    aTC.track.sliding(2).foreach { trackEntries =>        
+    aTC.track.sliding(2).foreach { trackEntries =>
       val first = L.LatLngLiteral(trackEntries.head.latitude, trackEntries.head.longditude * -1)
       val second = L.LatLngLiteral(trackEntries.last.latitude, trackEntries.last.longditude * -1)
-      L.polyline(
-        js.Array(first, second)
-      ).addTo(map)
+      layerGroup.addLayer(
+        L.polyline(
+          js.Array(first, second)
+        )
+      )
     }
+    layerGroup.addTo(map)
+    layerGroup
   }
+
 
 object TutorialApp:
   def main(args: Array[String]): Unit =

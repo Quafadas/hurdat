@@ -1,7 +1,12 @@
 Try and get some scala js going
 
+How about now?
 
-```scala mdoc:js
+```scala
+val x = 1
+```
+
+```scala
 import org.scalajs.dom.html
 import org.scalajs.dom
 import scala.util.Random

@@ -25,7 +25,7 @@ class HurdatColorSuite extends munit.FunSuite:
       }""")
 
     //https://en.wikipedia.org/wiki/Template:Storm_colour
-    val tI_TS = tI.copy(systemStatus = SystemStatus.TS)
+    val tI_TS = tI.copy(systemStatus = "TS")
     assertEquals(trackColour(tI_TS), "00faf4")
 
     assertEquals(findCategory(tI), 0)
