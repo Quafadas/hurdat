@@ -59,6 +59,8 @@ object js extends Common with ScalaJSModule {
 object site extends Docusaurus2Module with MDocModule {
        // Set the Scala version (required to invoke the proper compiler)
     override def scalaVersion = T(Config.scalaVersion)
+
+    override def scalaMdocVersion = "2.3.2"
     // The md inputs live in the "docs" folder of the project 
     override def mdocSources = T.sources{ T.workspace / "docs" }
     override def docusaurusSources = T.sources(
